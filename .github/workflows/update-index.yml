@@ -13,7 +13,7 @@ jobs:
   update-index:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: 查询官方接口并生成 index.json
         run: ./scripts/update-index.sh
