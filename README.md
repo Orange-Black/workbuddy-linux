@@ -1,5 +1,11 @@
 # WorkBuddy for Linux
 
+[![Update version index](https://github.com/ziyue67/workbuddy-linux/actions/workflows/update-index.yml/badge.svg)](https://github.com/ziyue67/workbuddy-linux/actions/workflows/update-index.yml)
+[![Self check](https://github.com/ziyue67/workbuddy-linux/actions/workflows/self-check.yml/badge.svg)](https://github.com/ziyue67/workbuddy-linux/actions/workflows/self-check.yml)
+[![Lint](https://github.com/ziyue67/workbuddy-linux/actions/workflows/lint.yml/badge.svg)](https://github.com/ziyue67/workbuddy-linux/actions/workflows/lint.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![最新版本](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fziyue67%2Fworkbuddy-linux%2Fmain%2Findex.json&query=%24.channels%5B%27workbuddy-linux-x64-deb%27%5D.version&label=WorkBuddy&color=blue)](index.json)
+
 [WorkBuddy](https://www.workbuddy.cn/) 官网的下载页只列了 macOS / Windows / iOS / Android / 鸿蒙，Linux 一栏写着「统信 UOS/银河麒麟：请到系统应用商店下载」——Ubuntu、Debian、Fedora 用户没有入口。
 
 但这个软件其实**有官方构建的 deb 和 rpm**，只是没挂在下载页上：腾讯的更新接口会直接返回最新 Linux 构建的下载地址。
@@ -113,9 +119,27 @@ curl -fsSL https://raw.githubusercontent.com/ziyue67/workbuddy-linux/main/index.
 
 ## 发布页与校验值
 
-[Releases](https://github.com/ziyue67/workbuddy-linux/releases) 里每个上游版本一条记录，内容是四个通道的官方 CDN 直链和校验值——**不附带安装包文件**（原因见 [NOTICE.md](NOTICE.md)）。上游出新版本时由 Action 自动建 release，不需要手动维护。
+[Releases](https://github.com/ziyue67/workbuddy-linux/releases) 里每个上游版本一条记录，内容是四个通道的官方 CDN 直链和校验值——**不附带安装包文件**，二进制始终留在腾讯自己的 CDN 上，仓库只做索引和直链（原因见 [NOTICE.md](NOTICE.md)）。上游出新版本时由 Action 自动建 release，不需要手动维护。
 
 `checksums.json` 收录实际下载后算出来的 SHA256（接口自带的 `api_sha256` 不可信，见下），欢迎 PR 补充其它通道和版本。
+
+## 自动化
+
+整个仓库不需要人工干预，三个工作流各管一段：
+
+| 工作流 | 触发 | 做什么 |
+| --- | --- | --- |
+| [`update-index.yml`](.github/workflows/update-index.yml) | 每天 03:17 UTC + 手动 | 刷新 `index.json` 并提交；发现上游新版本就自动建 Release（只放直链）；任一通道查询失败则整步失败，不会提交残缺索引 |
+| [`self-check.yml`](.github/workflows/self-check.yml) | 每天 06:23 UTC + 手动 + 脚本变更 | 体检：四个通道接口是否可用、直链是否 200 且文件大小正常、`index.json` 是否还在刷新（超过 48 小时未更新就报错） |
+| [`lint.yml`](.github/workflows/lint.yml) | push / PR | `shellcheck -S style` + `bash -n` |
+
+上游哪天改了接口或换了 CDN 路径，`self-check` 会先红，而不是等用户装不上才发现。所有脚本本地都能直接跑：
+
+```bash
+./scripts/update-index.sh      # 重新生成 index.json
+./scripts/release-notes.sh     # 预览下一个 Release 的说明
+./scripts/publish-release.sh --dry-run   # 演练发 Release（新版本才真的建）
+```
 
 ## 常见问题
 

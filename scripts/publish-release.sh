@@ -28,9 +28,9 @@ VERSION=$(jq -r '.channels["workbuddy-linux-x64-deb"].version // empty' index.js
 [ -n "$VERSION" ] || { echo "index.json 里没有版本号" >&2; exit 1; }
 TAG="v$VERSION"
 
+exists=0
 if gh release view "$TAG" -R "$REPO" >/dev/null 2>&1; then
-  echo "Release $TAG 已存在，跳过（本脚本只负责发布新版本）"
-  exit 0
+  exists=1
 fi
 
 notes=$(mktemp)
@@ -38,8 +38,13 @@ trap 'rm -f "$notes"' EXIT
 ./scripts/release-notes.sh >"$notes"
 
 if [ "$DRY_RUN" -eq 1 ]; then
-  echo "== 将创建 Release $TAG（-R $REPO），说明如下 ==" >&2
+  printf '== 演练：仓库 %s，标签 %s，已存在=%s ==\n\n' "$REPO" "$TAG" "$exists" >&2
   cat "$notes"
+  exit 0
+fi
+
+if [ "$exists" -eq 1 ]; then
+  echo "Release $TAG 已存在，跳过（本脚本只负责发布新版本）"
   exit 0
 fi
 

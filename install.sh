@@ -18,7 +18,6 @@ set -euo pipefail
 readonly API_BASE="${WORKBUDDY_API_BASE:-https://copilot.tencent.com/v2/update}"
 readonly DEFAULT_MIRROR="${WORKBUDDY_MIRROR:-https://download.codebuddy.cn}"
 
-PROG="${0##*/}"
 CHANNEL=""
 ARCH=""
 MODE="install"           # install | check | url-only | table
@@ -90,9 +89,9 @@ while [ $# -gt 0 ]; do
     -d|--dir)      [ $# -ge 2 ] || die "--dir 需要一个参数"; DOWNLOAD_DIR=$2; shift 2 ;;
     --mirror)      [ $# -ge 2 ] || die "--mirror 需要一个参数"; MIRROR=$2; shift 2 ;;
     --expect-sha256) [ $# -ge 2 ] || die "--expect-sha256 需要一个参数"; EXPECT_SHA=$2; shift 2 ;;
-    -n|--check)    MODE=check; shift ;;
-    -u|--url-only) MODE=url-only; shift ;;
-    -t|--table)    MODE=table; shift ;;
+    -n|--check)    MODE="check"; shift ;;
+    -u|--url-only) MODE="url-only"; shift ;;
+    -t|--table)    MODE="table"; shift ;;
     --json)        JSON=1; shift ;;
     -r|--redownload) REDOWNLOAD=1; shift ;;
     --dry-run)     DRY_RUN=1; shift ;;
@@ -353,7 +352,11 @@ if [ "$UP_TO_DATE" -eq 1 ] && [ "$FORCE" -eq 0 ]; then
   exit 0
 fi
 
-[ -n "$INSTALLED" ] && log "本机版本 $INSTALLED → 目标版本 $VERSION" || log "本机未安装 WorkBuddy，目标版本 $VERSION"
+if [ -n "$INSTALLED" ]; then
+  log "本机版本 $INSTALLED → 目标版本 $VERSION"
+else
+  log "本机未安装 WorkBuddy，目标版本 $VERSION"
+fi
 
 mkdir -p "$DOWNLOAD_DIR" || die "无法创建下载目录 $DOWNLOAD_DIR"
 FILE="$DOWNLOAD_DIR/$(basename "$URL")"

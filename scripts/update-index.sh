@@ -23,6 +23,7 @@ tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
 
 entries="[]"
+fail=0
 for spec in "${CHANNELS[@]}"; do
   arch=${spec%%:*}; type=${spec##*:}
   echo "查询 workbuddy-linux-$arch-$type ..." >&2
@@ -30,7 +31,8 @@ for spec in "${CHANNELS[@]}"; do
     # installed / up_to_date 是生成者本机的状态，不属于公共索引，去掉
     entries=$(jq -c --argjson e "$json" '. + [($e | del(.installed, .up_to_date))]' <<<"$entries")
   else
-    echo "  失败，跳过" >&2
+    echo "  失败" >&2
+    fail=1
     entries=$(jq -c --arg a "$arch" --arg t "$type" \
       '. + [{"platform":("workbuddy-linux-" + $a + "-" + $t),"type":$t,"arch":$a,"error":"查询失败"}]' <<<"$entries")
   fi
@@ -48,3 +50,6 @@ jq -S --arg updated "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
 mv "$tmp" "$OUT"
 trap - EXIT
 echo "已写入 $OUT" >&2
+
+# 任一通道查询失败就以非 0 退出：让 Action 红掉、不要提交残缺索引
+exit "$fail"

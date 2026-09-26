@@ -1,0 +1,53 @@
+name: Self check
+
+# 定期体检：官方接口还能不能查、四个通道的直链还能不能下、index.json 是不是还在刷新。
+# 上游改接口 / 换 CDN 路径时，这里会红，不会等到用户装不上才发现。
+
+on:
+  schedule:
+    - cron: '23 6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'install.sh'
+      - 'scripts/**'
+      - '.github/workflows/self-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: 四个通道的接口与直链
+        run: |
+          fail=0
+          for spec in x64:deb x64:rpm arm64:deb arm64:rpm; do
+            arch=${spec%%:*}; type=${spec##*:}
+            if ! json=$(./install.sh --check --json --arch "$arch" --channel "$type"); then
+              echo "::error::workbuddy-linux-$arch-$type 接口查询失败"
+              fail=1; continue
+            fi
+            ver=$(jq -r '.version' <<<"$json")
+            url=$(jq -r '.url' <<<"$json")
+            code=$(curl -sIL -o /dev/null -w '%{http_code}' --max-time 30 "$url")
+            size=$(curl -sIL --max-time 30 "$url" | tr -d '\r' | awk 'tolower($1)=="content-length:"{v=$2} END{print v+0}')
+            printf '%-28s %-20s HTTP %s  %s 字节\n' "workbuddy-linux-$arch-$type" "$ver" "$code" "$size"
+            [ "$code" = "200" ] || { echo "::error::workbuddy-linux-$arch-$type 直链返回 $code"; fail=1; }
+            [ "$size" -gt 100000000 ] || { echo "::error::workbuddy-linux-$arch-$type 文件大小异常：$size"; fail=1; }
+          done
+          exit "$fail"
+
+      - name: index.json 是否还在刷新
+        run: |
+          updated=$(jq -r '.updated' index.json)
+          age=$(( ( $(date -u +%s) - $(date -u -d "$updated" +%s) ) / 3600 ))
+          echo "index.json 更新于 $updated（$age 小时前）"
+          if [ "$age" -ge 48 ]; then
+            echo "::error::index.json 已 $age 小时未更新，每日刷新可能已失效"
+            exit 1
+          fi
