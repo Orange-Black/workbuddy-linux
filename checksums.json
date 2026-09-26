@@ -1,0 +1,14 @@
+{
+  "note": "社区实测的下载文件 SHA256。官方更新接口里的 api_sha256 字段与实际文件内容哈希不一致（接口的已知现象），这里记录的是真实下载后算出来的值，用于离线留档和 --expect-sha256 强校验。欢迎 PR 补充其它通道 / 版本。",
+  "how_to_verify": "sha256sum <下载的文件>，或 ./install.sh --expect-sha256 <sha256>",
+  "entries": [
+    {
+      "platform": "workbuddy-linux-x64-deb",
+      "version": "5.5.6.38337834",
+      "size": 429302312,
+      "sha256": "2ef1bca217d29d9c2ba988c82079aa6ea0077e9f1ff882c6ab5dd7998bddf721",
+      "measured": "2026-09-26",
+      "method": "三次独立下载，结果一致；本地实测安装通过（Ubuntu 26.04.1 LTS）"
+    }
+  ]
+}

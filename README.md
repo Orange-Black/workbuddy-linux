@@ -111,6 +111,12 @@ curl -fsSL https://ghproxy.net/https://raw.githubusercontent.com/ziyue67/workbud
 curl -fsSL https://raw.githubusercontent.com/ziyue67/workbuddy-linux/main/index.json | jq -r '.channels["workbuddy-linux-x64-deb"].version'
 ```
 
+## 发布页与校验值
+
+[Releases](https://github.com/ziyue67/workbuddy-linux/releases) 里每个上游版本一条记录，内容是四个通道的官方 CDN 直链和校验值——**不附带安装包文件**（原因见 [NOTICE.md](NOTICE.md)）。上游出新版本时由 Action 自动建 release，不需要手动维护。
+
+`checksums.json` 收录实际下载后算出来的 SHA256（接口自带的 `api_sha256` 不可信，见下），欢迎 PR 补充其它通道和版本。
+
 ## 常见问题
 
 **接口给的 `sha256hash` 和实际文件对不上？**
