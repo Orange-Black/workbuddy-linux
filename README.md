@@ -131,7 +131,8 @@ curl -fsSL https://raw.githubusercontent.com/ziyue67/workbuddy-linux/main/index.
 
 ## 许可与出处
 
-- 本仓库的脚本、文档与索引数据：MIT，见 [LICENSE](LICENSE)。
+- 本仓库的脚本、文档与索引数据：MIT，见 [LICENSE](LICENSE)；覆盖范围的详细说明见 [NOTICE.md](NOTICE.md)。
 - WorkBuddy 本体：腾讯科技（深圳）有限公司的专有软件，版权归腾讯所有，不在本许可证覆盖范围内，本仓库也不分发其安装包。
+- 本项目与腾讯无隶属关系，不是官方项目。
 
 发现这个安装方法的原始文章：[《WorkBuddy 没给 Ubuntu/Fedora 留下载入口？官方的 deb 和 rpm 都找到了》](https://xingwangzhe.fun/posts/workbuddy-linux-deb-rpm/)（作者 xingwangzhe，CC-BY-NC-SA-4.0）。本仓库的脚本是在该思路基础上实现的，接口地址与拆包结论均来自该文。

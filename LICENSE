@@ -19,18 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
--------------------------------------------------------------------------------
-
-注意 / Notice
-
-本许可证只覆盖本仓库中的脚本、文档与索引数据（即作者自己创作的部分）。
-
-WorkBuddy 是腾讯科技（深圳）有限公司的专有软件，版权归腾讯所有，其二进制安装包
-（deb / rpm）不受本许可证约束，本仓库也不分发这些安装包。脚本运行时通过腾讯官方
-CDN（download.codebuddy.cn）下载安装包，相关使用须遵守腾讯自己的许可条款。
-
-This license covers only the scripts, documentation and index data authored in
-this repository. WorkBuddy itself is proprietary software of Tencent Technology
-(Shenzhen) Company Limited; its binary packages are NOT covered by this license
-and are NOT redistributed by this repository.
