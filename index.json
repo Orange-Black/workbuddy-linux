@@ -1,0 +1,47 @@
+{
+  "channels": {
+    "workbuddy-linux-arm64-deb": {
+      "api_sha256": "9ff81b59e0412a51c04f6dc1189ffd92e4dd1c9b4cc0d0b29b8c711159505c87",
+      "arch": "arm64",
+      "platform": "workbuddy-linux-arm64-deb",
+      "released": "2026-09-10T17:23:54Z",
+      "timestamp": 1789061034,
+      "type": "deb",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-arm64-deb/WorkBuddy-linux-arm64-deb-5.5.6.38337834-5f969292.deb",
+      "version": "5.5.6.38337834"
+    },
+    "workbuddy-linux-arm64-rpm": {
+      "api_sha256": "c0dd8be3ceafaab6a7cabbc7bc0fb6d4dec1a7e6a86506b0e753c3ccf4ee8b5b",
+      "arch": "arm64",
+      "platform": "workbuddy-linux-arm64-rpm",
+      "released": "2026-09-10T17:23:54Z",
+      "timestamp": 1789061034,
+      "type": "rpm",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-arm64-rpm/WorkBuddy-linux-arm64-rpm-5.5.6.38337834-5f969292.rpm",
+      "version": "5.5.6.38337834"
+    },
+    "workbuddy-linux-x64-deb": {
+      "api_sha256": "03d756b259d7086c22098fa077589a032d60948d1de7313473360eefe11e240f",
+      "arch": "x64",
+      "platform": "workbuddy-linux-x64-deb",
+      "released": "2026-09-10T17:23:54Z",
+      "timestamp": 1789061034,
+      "type": "deb",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.5.6.38337834-5f969292.deb",
+      "version": "5.5.6.38337834"
+    },
+    "workbuddy-linux-x64-rpm": {
+      "api_sha256": "cde561d94d269a752ecdc454ec0808c03da2222ebb4c064ba3c5367949891b6a",
+      "arch": "x64",
+      "platform": "workbuddy-linux-x64-rpm",
+      "released": "2026-09-10T17:23:54Z",
+      "timestamp": 1789061034,
+      "type": "rpm",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.5.6.38337834-5f969292.rpm",
+      "version": "5.5.6.38337834"
+    }
+  },
+  "note": "本索引只记录腾讯官方接口返回的元数据，不托管任何二进制包。官方 api_sha256 与实际下载文件的历史实测值不一致，请以实际下载后自行计算的 sha256 为准。",
+  "source": "https://copilot.tencent.com/v2/update",
+  "updated": "2026-09-26T08:33:11Z"
+}
